@@ -81,4 +81,4 @@ python scripts/verify_cuda.py
 
 ## 📄 License
 
-This project is created for educational and portfolio purposes.
+This is a personal project developed for research and building an AI/ML portfolio.
