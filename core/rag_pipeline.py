@@ -64,7 +64,7 @@ class RagPipeline:
         print("--- Ingestion Complete ---")
         return True
         
-    def ask(self, query: str) -> str:
+    def ask(self, query: str, allowed_sources: List[str] = None) -> str:
         """
         End-to-end QA Pipeline:
         1. Embed user query
@@ -76,7 +76,7 @@ class RagPipeline:
         query_vector = self.embedder.embed_text([query])[0]
         
         # 2. Retrieve context from Qdrant
-        search_results = self.vdb.search(query_vector, limit=4)
+        search_results = self.vdb.search(query_vector, limit=4, allowed_sources=allowed_sources)
         
         if not search_results:
             return "Xin lỗi, tôi không tìm thấy thông tin nào phù hợp trong tài liệu."

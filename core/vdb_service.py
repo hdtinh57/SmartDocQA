@@ -1,7 +1,7 @@
 import uuid
 from typing import List, Dict, Any, Optional
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue
+from qdrant_client.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue, MatchAny
 from core.config import settings
 
 class VDBService:
@@ -64,12 +64,28 @@ class VDBService:
         )
         print(f"Upserted {len(points)} chunks into {self.collection_name}.")
         
-    def search(self, query_vector: List[float], limit: int = 5) -> List[Dict[str, Any]]:
+    def search(self, query_vector: List[float], limit: int = 5, allowed_sources: Optional[List[str]] = None) -> List[Dict[str, Any]]:
         """Search similar vectors and return the payload."""
+        search_filter = None
+        if allowed_sources is not None and len(allowed_sources) > 0:
+            search_filter = Filter(
+                must=[
+                    FieldCondition(
+                        key="source",
+                        match=MatchAny(any=allowed_sources)
+                    )
+                ]
+            )
+        elif allowed_sources is not None and len(allowed_sources) == 0:
+            # If allowed_sources list is explicitly empty, return nothing
+            return []
+            
         search_result = self.client.query_points(
             collection_name=self.collection_name,
             query=query_vector,
-            limit=limit
+            limit=limit,
+            query_filter=search_filter,
+            score_threshold=0.2 # Filter out completely irrelevant vectors
         ).points
         
         results = []

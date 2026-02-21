@@ -119,7 +119,7 @@ with tab1:
         # Generate assistant response
         with st.chat_message("assistant"):
             with st.spinner("Đang tìm kiếm thông tin và suy nghĩ..."):
-                response = st.session_state.pipeline.ask(prompt)
+                response = st.session_state.pipeline.ask(prompt, allowed_sources=st.session_state.processed_files)
                 st.markdown(response)
                 
         st.session_state.messages.append({"role": "assistant", "content": response})
