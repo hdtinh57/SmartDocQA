@@ -2,4 +2,4 @@ venv/
 .env 
 devlog.md
 smart-document-qa.md
-data/
+data/test_db/  
