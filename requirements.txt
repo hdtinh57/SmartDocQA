@@ -10,13 +10,14 @@ langchain>=0.2.0
 langchain-core>=0.2.0
 langchain-community>=0.2.0
 langchain-google-genai>=1.0.5
+google-genai>=0.5.0
 langchain-qdrant>=0.1.1
 qdrant-client>=1.9.1
 sentence-transformers>=3.0.0
 FlagEmbedding>=1.2.10
 
 # OCR & VLM
-transformers>=4.40.0
+transformers==4.47.1
 accelerate>=0.30.0
 mistralai>=0.4.0
 pillow>=10.3.0

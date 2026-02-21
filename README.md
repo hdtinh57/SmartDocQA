@@ -71,6 +71,18 @@ Ensure you have Python 3.13 installed along with an NVIDIA GPU supporting CUDA 1
      QDRANT_URL="http://localhost:6333"
      ```
 
+### Obtaining API Keys
+
+1. **Mistral API Key (OCR):**
+   - Create an account at [console.mistral.ai](https://console.mistral.ai/).
+   - Navigate to **API Keys** and create a new token. (Free tier available)
+2. **Gemini API Key (LLM):**
+   - Go to [Google AI Studio](https://aistudio.google.com/).
+   - Click **Get API key** and generate one for your project.
+3. **Qdrant Cloud (Vector DB - Optional but Recommended):**
+   - Sign up at [cloud.qdrant.io](https://cloud.qdrant.io/).
+   - Create a free cluster, note your Cluster URL, and generate an API Key.
+
 ### Verification
 
 Run the hardware verification script to ensure PyTorch detects your GPU:
