@@ -101,6 +101,25 @@ class VDBService:
             print(f"Error checking document existence: {e}")
             return False
 
+    def delete_document(self, source_name: str) -> bool:
+        """Delete all vectors associated with a specific document source."""
+        try:
+            self.client.delete(
+                collection_name=self.collection_name,
+                points_selector=Filter(
+                    must=[
+                        FieldCondition(
+                            key="source",
+                            match=MatchValue(value=source_name)
+                        )
+                    ]
+                )
+            )
+            return True
+        except Exception as e:
+            print(f"Error deleting document: {e}")
+            return False
+
     def get_all_documents(self) -> List[str]:
         """Fetch all unique source document names from Qdrant."""
         try:

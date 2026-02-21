@@ -40,6 +40,13 @@ class RagPipeline:
             
         print(f"OCR extracted {len(text)} characters.")
         
+        # Save OCR text locally for later viewing
+        import os
+        os.makedirs("data/ocr_results", exist_ok=True)
+        ocr_path = f"data/ocr_results/{source_name}.txt"
+        with open(ocr_path, "w", encoding="utf-8") as f:
+            f.write(text)
+        
         # 2. Chunking
         chunks, metadatas = self.parser.parse_and_chunk(text, source_metadata={"source": source_name})
         if not chunks:

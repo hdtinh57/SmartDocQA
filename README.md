@@ -6,8 +6,6 @@
 
 A cutting-edge Retrieval-Augmented Generation (RAG) system for intelligent document querying. The system supports multi-modal document processing (PDFs, Images, and Text) using advanced Vision-Language Models (VLMs) and dense-sparse vector search.
 
-Developed as part of an AI/ML engineering portfolio for 2025-2026.
-
 ## 🌟 Key Features
 
 - **Multi-modal OCR Processing**: Utilizes **Qwen3-VL** (local) and **Mistral OCR API** to extract text, tables, and complex layouts with high precision.
@@ -93,4 +91,4 @@ python scripts/verify_cuda.py
 
 ## 📄 License
 
-This is a personal project developed for research and building an AI/ML portfolio.
+This is a personal project developed for research.
