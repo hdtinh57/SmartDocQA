@@ -27,6 +27,16 @@ class VDBService:
             
         self._ensure_collection()
         
+        # Ensure payload index for the source field (required for deletion/filtering)
+        try:
+            self.client.create_payload_index(
+                collection_name=self.collection_name,
+                field_name="source",
+                field_schema="keyword"
+            )
+        except Exception:
+            pass
+        
     def _ensure_collection(self):
         """Create collection if it doesn't exist. BAAI/bge-m3 default dimension is 1024."""
         collections = self.client.get_collections().collections
