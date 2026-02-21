@@ -1,7 +1,7 @@
 import uuid
 from typing import List, Dict, Any, Optional
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
+from qdrant_client.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue
 from core.config import settings
 
 class VDBService:
@@ -81,3 +81,42 @@ class VDBService:
             })
             
         return results
+
+    def has_document(self, source_name: str) -> bool:
+        """Check if a document has already been processed and saved."""
+        try:
+            result = self.client.count(
+                collection_name=self.collection_name,
+                count_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="source",
+                            match=MatchValue(value=source_name)
+                        )
+                    ]
+                )
+            )
+            return result.count > 0
+        except Exception as e:
+            print(f"Error checking document existence: {e}")
+            return False
+
+    def get_all_documents(self) -> List[str]:
+        """Fetch all unique source document names from Qdrant."""
+        try:
+            sources = set()
+            points, next_page_offset = self.client.scroll(
+                collection_name=self.collection_name,
+                limit=10000,
+                with_payload=["source"],
+                with_vectors=False
+            )
+            for point in points:
+                if point.payload:
+                    source = point.payload.get("source")
+                    if source and source != "unknown":
+                        sources.add(source)
+            return list(sources)
+        except Exception as e:
+            print(f"Error retrieving documents: {e}")
+            return []

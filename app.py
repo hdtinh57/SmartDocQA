@@ -22,7 +22,9 @@ def initialize_session_state():
     if "pipeline" not in st.session_state:
         st.session_state.pipeline = get_pipeline()
     if "processed_files" not in st.session_state:
-        st.session_state.processed_files = []
+        # Lấy danh sách tài liệu đã có sẵn từ Qdrant để hiến thị
+        docs = st.session_state.pipeline.vdb.get_all_documents()
+        st.session_state.processed_files = docs
 
 initialize_session_state()
 
@@ -46,8 +48,11 @@ with st.sidebar:
     
     if st.button("Process Document", type="primary"):
         if uploaded_file is not None:
-            if uploaded_file.name in st.session_state.processed_files:
-                st.warning(f"File '{uploaded_file.name}' đã được xử lý trước đó!")
+            # Kiểm tra xem file đã có trong DB chưa (trên giao diện cache hoặc quét Qdrant trực tiếp)
+            if uploaded_file.name in st.session_state.processed_files or st.session_state.pipeline.vdb.has_document(uploaded_file.name):
+                st.warning(f"Tài liệu '{uploaded_file.name}' đã có sẵn trong cơ sở dữ liệu! Bạn có thể đặt câu hỏi ngay.")
+                if uploaded_file.name not in st.session_state.processed_files:
+                    st.session_state.processed_files.append(uploaded_file.name)
             else:
                 with st.spinner(f"Đang xử lý {uploaded_file.name}... (OCR & VectorEmbedding)"):
                     # Save uploaded file to a temporary file
