@@ -14,7 +14,7 @@ st.set_page_config(
 @st.cache_resource
 def get_pipeline():
     # Cache the pipeline so models (like BGE-M3) are loaded only once
-    return RagPipeline(use_local_vlm=False)
+    return RagPipeline(use_local_vlm=True)
 
 def initialize_session_state():
     if "messages" not in st.session_state:
